@@ -1,9 +1,16 @@
 var a = 1;
-
+var ports = []
 onconnect = function (e) {
-    var port = e.ports[0];
+    var port = e.source;
+    port.postMessage(a)
+    ports.push(port)
+
+    console.log('e', e)
 
     port.onmessage = function () {
-        port.postMessage(a++)
+        ++a
+        ports.forEach((p)=>{
+            p.postMessage(a)
+        })
     }
 }
